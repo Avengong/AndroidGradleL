@@ -26,3 +26,167 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
 }
+
+task hello {
+    doLast {
+        println("xxxxxxxxx   hello world !!!")
+    }
+}
+//字符串 单双都是字符串
+// ./gradlew printStringClass
+task printStringClass << {
+
+    def str1 = 'single reference'
+    def str2 = "double reference"
+
+    println "single reference type: ${str1.getClass().name} "
+    println "double reference type:${str2.getClass().name}"
+
+
+}
+
+//做运算
+task printStringVar << {
+
+    def str = '张三 '
+
+    println '单引号做运算:${str}'
+    println "双引号做运算:${str}"
+
+}
+
+//list集合
+task printList << {
+    def numList = [1, 2, 3, 4, 5, 6, 7]
+
+    println(numList.getClass().name)
+
+    println(numList[2])
+    println(numList[3..4])
+    println(numList[-1])
+    println(numList[-2])
+
+    //集合迭代
+    numList.each {
+        println it
+    }
+
+
+}
+
+//map集合
+task printMap << {
+    def map = ['width': 1024, 'height': 768]
+
+    println map['width']
+    println(map.width)
+    println(map.height)
+
+    //迭代
+    map.each {
+        println("key: ${it.key} value: ${it.value}")
+    }
+
+}
+
+//方法
+task invokeMethod << {
+    addMethod(1, 2)
+
+    addMethod 1, 2
+
+
+}
+
+def addMethod(int a, int b) {
+    println a + b
+//    return a+b
+    a + b //可以不写return
+}
+//方法的return ，可不写
+task printMethodReturn << {
+
+    def add1 = findBigMethod(3, 4)
+    def add2 = findBigMethod 5, 6
+
+    println "add1:$add1, add2: $add2"
+
+}
+
+def findBigMethod(int a, int b) {
+    if (a > b) (
+            a
+    ) else {
+        b
+    }
+}
+
+//重点！！ 代码块可以作为参数传递
+
+//javabean
+
+task helloJavabean << {
+
+    Person person = new Person()
+
+    println "名字： ${person.name}"
+    person.name="li si"
+    println "名字： ${person.name}"
+
+
+}
+
+class Person {
+    public String name
+}
+
+//闭包
+task helloClosure << {
+    customEach{
+        println it
+    }
+}
+
+def customEach(Closure closure){
+    for(int i in 1..10){
+        //这好像是给传参过来的闭包回调参数
+        closure(i)
+    }
+}
+
+task helloClosures <<{
+
+    mapEach{
+        k,v->
+        println "k :$k v:$v"
+    }
+
+}
+
+
+def mapEach(closure){  //close 默认为object类型
+
+    def map=["name":"zhang san", "age":24]
+
+    map.each {
+        closure(it.key,it.value)
+    }
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
